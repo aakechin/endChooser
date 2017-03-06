@@ -16,8 +16,6 @@ def chooseBestPrimers(seq,seqNames,rFile):
     pos=seq.find('[')
     seqRef=seq.replace(seq[seq.find('['):seq.find(']')+1],ref)
     seqAlt=seq.replace(seq[seq.find('['):seq.find(']')+1],alt)
-    print(seqRef)
-    print(seqAlt)
     maxVal=0
     primerEnds=[]
     for key,item in mama[seqRef[pos-1:pos+1]][seqAlt[pos-1:pos+1]].items():
@@ -26,14 +24,12 @@ def chooseBestPrimers(seq,seqNames,rFile):
             maxVal=item
         elif item==maxVal:
             primerEnds.append([key,1])
-    print(seqRef[pos-1:pos+1],seqAlt[pos-1:pos+1])
     for key,item in mama[revComplement(seqRef[pos:pos+2])][revComplement(seqAlt[pos:pos+2])].items():
         if item>maxVal:
             primerEnds=[[key,-1]]
             maxVal=item
         elif item==maxVal:
             primerEnds.append([key,-1])
-    print(revComplement(seqRef[pos:pos+2]),revComplement(seqAlt[pos:pos+2]))
     bestPrimers=[]
     for pe in primerEnds:
         if pe[1]>0:
