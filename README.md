@@ -6,6 +6,7 @@ Tool endChooser chooses the best variant of the last two nucleotides of allele-s
 endChooser works on the Python3+ and requires the following packages:
 * **Biopython** - you can install it with: `sudo apt-get install python3-biopython`
 * **argparse** - you can install it with: `sudo apt-get install python3-argparse`
+* **easygui** - for use of GUI-version: `sudo apt-get install python3-easygui`
 
 ### Windows
 For use on windows download and install python3.5 from www.python.org/downloads/release/python-350/ (remember to check "Add python to PATH" during installation)
@@ -20,15 +21,16 @@ For use on Mac OS download and install python3.6 from www.python.org/downloads/
 After that install the followong packages with respective commands in command line:
 * **Biopython** - with: `pip install biopython`
 * **argparse** - you can install it with: `pip install argparse`
+* **easygui** - for use of GUI-version: `pip install easygui`
 
 ## Installation
 endChooser does not require any installations
 
 ## Use
-You can see all parameters with 
-```
-python3 endChooser.py -h
-```
+You can see all parameters for command-line version with:
+`python endChooser.py -h`
+Or you can start GUI-version with:
+`python endChooser_gui.py`
 ## Parameters
 ```
 -h, --help            show this help message and exit
