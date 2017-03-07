@@ -8,7 +8,7 @@ endChooser works on the Python3+ and requires the following packages:
 * **argparse** - you can install it with: `sudo apt-get install python3-argparse`
 
 ### Windows
-For use on windows download and install python3.6 from www.python.org/downloads/ (remember to check "Add python to PATH")
+For use on windows download and install python3.5 from www.python.org/downloads/release/python350/ (remember to check "Add python to PATH")
 If you do not have Visual Studio C++ already installed, download and install it from landinghub.visualstudio.com/visual-cpp-build-tools/
 After that install the followong packages with respective commands in command line:
 * **Biopython** - with: `pip install biopython`
