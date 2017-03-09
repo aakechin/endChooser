@@ -17,30 +17,25 @@ def chooseBestPrimers(seq,seqNames,rFile):
     seqRef=seq.replace(seq[seq.find('['):seq.find(']')+1],ref)
     seqAlt=seq.replace(seq[seq.find('['):seq.find(']')+1],alt)
     maxVal=0
+    primerVals=[]
     primerEnds=[]
     for key,item in mama[seqRef[pos-1:pos+1]][seqAlt[pos-1:pos+1]].items():
-        if item>maxVal:
-            primerEnds=[[key,1]]
-            maxVal=item
-        elif item==maxVal:
-            primerEnds.append([key,1])
+        primerEnds.append([key,1])
+        primerVals.append(item)
     for key,item in mama[revComplement(seqRef[pos:pos+2])][revComplement(seqAlt[pos:pos+2])].items():
-        if item>maxVal:
-            primerEnds=[[key,-1]]
-            maxVal=item
-        elif item==maxVal:
-            primerEnds.append([key,-1])
+        primerEnds.append([key,-1])
+        primerVals.append(item)
     bestPrimers=[]
     for pe in primerEnds:
         if pe[1]>0:
             bestPrimers.append([seqRef[pos-30:pos-1]+pe[0],1])
         else:
             bestPrimers.append([revComplement(seqRef[pos+2:pos+30])+pe[0],-1])
-    for bp in bestPrimers:
+    for i,bp in enumerate(bestPrimers):
         if bp[1]>0:
-            rFile.write(seqNames[-1]+'\t+\t'+bp[0]+'\t'+str(maxVal)+'\n')
+            rFile.write(seqNames[-1]+'\t+\t'+bp[0]+'\t'+str(primerVals[i])+'\n')
         else:
-            rFile.write(seqNames[-1]+'\t-\t'+bp[0]+'\t'+str(maxVal)+'\n')
+            rFile.write(seqNames[-1]+'\t-\t'+bp[0]+'\t'+str(primerVals[i])+'\n')
 
 mama={}
 file=open(thisDir+'mamaPrimers.txt')
