@@ -10,7 +10,7 @@ endChooser works on the Python3+ and requires the following packages:
 
 ### Windows
 For use on windows download and install python3.4.3 from www.python.org/downloads/release/python-343/ (remember to check "Add python to PATH" during installation). 
-If you do not have Visual Studio C++ already installed, download and install it from http://landinghub.visualstudio.com/visual-cpp-build-tools/. 
+If you do not have Visual Studio C++ already installed, download and install it from http://landinghub.visualstudio.com/visual-cpp-build-tools/ or from https://www.microsoft.com/ru-ru/download/details.aspx?id=48145. 
 Visual Studio C++ may ask you to update .Net Framework. Download and install it from https://www.microsoft.com/ru-ru/download/details.aspx?id=39257 (generally for Windows XP users). 
 After that open command line and install the followong packages with respective commands:
 * **Biopython** - with: `pip install biopython`
