@@ -26,16 +26,19 @@ def chooseBestPrimers(seq,seqNames,rFile):
         primerEnds.append([key,-1])
         primerVals.append(item)
     bestPrimers=[]
+    plus40=[]
     for pe in primerEnds:
         if pe[1]>0:
-            bestPrimers.append([seqRef[pos-30:pos-1]+pe[0],1])
+            bestPrimers.append([seqRef[max(pos-40,0):pos-1]+pe[0],1])
+            plus40.append(seqRef[pos+1:min(len(seqRef),pos+41)])
         else:
-            bestPrimers.append([revComplement(seqRef[pos+2:pos+30])+pe[0],-1])
+            bestPrimers.append([revComplement(seqRef[pos+2:min(len(seqRef),pos+40)])+pe[0],-1])
+            plus40.append(revComplement(seqRef[max(pos-40,0):pos]))
     for i,bp in enumerate(bestPrimers):
         if bp[1]>0:
-            rFile.write(seqNames[-1]+'\t+\t'+bp[0]+'\t'+str(primerVals[i])+'\n')
+            rFile.write(seqNames[-1]+'\t+\t'+bp[0]+'\t'+str(primerVals[i])+'\t'+plus40[i]+'\n')
         else:
-            rFile.write(seqNames[-1]+'\t-\t'+bp[0]+'\t'+str(primerVals[i])+'\n')
+            rFile.write(seqNames[-1]+'\t-\t'+bp[0]+'\t'+str(primerVals[i])+'\t'+plus40[i]+'\n')
 
 mama={}
 file=open(thisDir+'mamaPrimers.txt')
@@ -62,7 +65,7 @@ except FileNotFoundError:
     exit(0)
 
 rFile=open(fastaFile+'.primers.xls','w')
-rFile.write('Sequence_Name\tStrand\tBest_Primer\tMaximal_Discrimination_Value\n')
+rFile.write('Sequence_Name\tStrand\tBest_Primer\tMaximal_Discrimination_Value\t+40bp\n')
 seqNames=[]
 for line in f:
     if '>' in line:
