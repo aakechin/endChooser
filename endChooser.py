@@ -27,18 +27,21 @@ def chooseBestPrimers(seq,seqNames,rFile):
         primerVals.append(item)
     bestPrimers=[]
     plus40=[]
+    wtPrimers=[]
     for pe in primerEnds:
         if pe[1]>0:
             bestPrimers.append([seqRef[max(pos-40,0):pos-1]+pe[0],1])
+            wtPrimers.append(seqRef[max(pos-40,0):pos+1])
             plus40.append(seqRef[pos+1:min(len(seqRef),pos+41)])
         else:
             bestPrimers.append([revComplement(seqRef[pos+2:min(len(seqRef),pos+40)])+pe[0],-1])
+            wtPrimers.append(revComplement(seqRef[pos:min(len(seqRef),pos+40)]))
             plus40.append(revComplement(seqRef[max(pos-40,0):pos]))
     for i,bp in enumerate(bestPrimers):
         if bp[1]>0:
-            rFile.write(seqNames[-1]+'\t'+ref+'/'+alt+'\t'+'+\t'+bp[0]+'\t'+str(primerVals[i])+'\t'+plus40[i]+'\n')
+            rFile.write(seqNames[-1]+'\t'+ref+'/'+alt+'\t'+'+\t'+bp[0]+'\t'+wtPrimers[i]+'\t'+str(primerVals[i])+'\t'+plus40[i]+'\n')
         else:
-            rFile.write(seqNames[-1]+'\t'+revComplement(ref)+'/'+revComplement(alt)+'\t'+'-\t'+bp[0]+'\t'+str(primerVals[i])+'\t'+plus40[i]+'\n')
+            rFile.write(seqNames[-1]+'\t'+revComplement(ref)+'/'+revComplement(alt)+'\t'+'-\t'+bp[0]+'\t'+wtPrimers[i]+'\t'+str(primerVals[i])+'\t'+plus40[i]+'\n')
 
 mama={}
 file=open(thisDir+'mamaPrimers.txt')
@@ -65,7 +68,7 @@ except FileNotFoundError:
     exit(0)
 
 rFile=open(fastaFile+'.primers.xls','w')
-rFile.write('Sequence_Name\tRef/Alt\tStrand\tBest_Primer\tMaximal_Discrimination_Value\t+40bp_after_primer\n')
+rFile.write('Sequence_Name\tRef/Alt\tStrand\tBest_Primer_for_Mutant\tPrimer_for_WT\tDiscrimination_Value\t+40bp_after_primer\n')
 seqNames=[]
 for line in f:
     if '>' in line:
@@ -74,6 +77,6 @@ for line in f:
         seqNames.append(line.replace('> ','').replace('>','').replace('\n','').replace('\r',''))
         seq=''
     else:
-        seq+=line.replace('\n','').replace('\r','')
+        seq+=line.replace('\n','').replace('\r','').replace(' ','').replace('\t','')
 chooseBestPrimers(seq,seqNames,rFile)
 rFile.close()
