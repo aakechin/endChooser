@@ -44,6 +44,23 @@ Or you can start GUI-version with:
                         multi-fasta-file with highlighted variable position in
                         the format of [A/T], where A is a reference allele and
                         T is an alternative
+  --amplicon-length AMPLICONLEN, -al AMPLICONLEN
+                        average length of amplicon. Default: 150 bp
+  --amplicon-length-deviation AMPLICONLENDEV, -ald AMPLICONLENDEV
+                        deviation of amplicon length. Default: 10 bp
+  --primer-length PRIMERLEN, -pl PRIMERLEN
+                        optimal primer length. Default: 20 nucleotides
+  --primer-length-deviation PRIMERLENDEV, -pld PRIMERLENDEV
+                        deviation of primer length. Default: 4 nucleotides
+  --melt-temp MELTTEMP, -at MELTTEMP
+                        optimal temperature of annealing. Default: 60 degrees
+                        Celsius
+  --melt-temp-deviation MELTTEMPDEV, -atd MELTTEMPDEV
+                        deviation of temperature of annealing. Default: 5
+                        degrees Celsius
+  --min-dimer-dg DIMERDG, -dimerdg DIMERDG
+                        minimal value of dG of dimer formation. Default: -3000
+                        kcal/mol
 ```
 ## Citation
 Manuscript is prepared. Now you can cite it by link.
