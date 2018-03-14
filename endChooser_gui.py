@@ -40,13 +40,25 @@ def constructPrimers(mutPrimerSeq,wtPrimerSeq,seq,ampliconLen,ampliconLenDev,pri
                 for k in range(primerLen-primerLenDev,primerLen+primerLenDev+1):
                     rPrimer=revComplement(seq[rPrimerStart-k:rPrimerStart+1])
                     tm3=mt.Tm_Wallace(rPrimer)
-                    homodG3=primer3.calcHomodimer(rPrimer).dg
-                    heterodG1=primer3.calcHeterodimer(rPrimer,mutPrimer).dg
-                    heterodG2=primer3.calcHeterodimer(rPrimer,wtPrimer).dg
-                    hairpindG3=primer3.calcHairpin(rPrimer).dg
+                    try:
+                        homodG3=primer3.calcHomodimer(rPrimer).dg
+                    except OSError:
+                        homodG3=0
+                    try:
+                        heterodG1=primer3.calcHeterodimer(rPrimer,mutPrimer).dg
+                    except OSError:
+                        heterodG1=0
+                    try:
+                        heterodG2=primer3.calcHeterodimer(rPrimer,wtPrimer).dg
+                    except OSError:
+                        heterodG2=0
+                    try:
+                        hairpindG3=primer3.calcHairpin(rPrimer).dg
+                    except OSError:
+                        hairpindG3=0
                     primers.append([mutPrimer,wtPrimer,rPrimer])
                     primerProps['_'.join(primers[-1])]=[len(mutPrimer),len(wtPrimer),len(rPrimer),tm1,tm2,tm3,homodG1,homodG2,homodG3,hairpindG1,hairpindG2,hairpindG3,heterodG0,heterodG1,heterodG2]
-                    primerScores['_'.join(primers[-1])]=20*(abs(tm1-meltTemp)+abs(tm2-meltTemp)+abs(tm3-meltTemp)+abs(tm1-tm2)+abs(tm2-tm3)+abs(tm1-tm3))+5*(min(homodG1,dimerdg)+min(homodG2,dimerdg)+min(homodG3,dimerdg)+min(heterodG0,dimerdg)+min(heterodG1,dimerdg)+min(heterodG2,0))/(6*dimerdg)+(min(hairpindG1,dimerdg)+min(hairpindG2,dimerdg)+min(hairpindG3,dimerdg))/(3*dimerdg)
+                    primerScores['_'.join(primers[-1])]=20*(abs(tm1-meltTemp)+abs(tm2-meltTemp)+abs(tm3-meltTemp)+abs(tm1-tm2)+abs(tm2-tm3)+abs(tm1-tm3))+5*(min(homodG1,dimerdg)+min(homodG2,dimerdg)+min(homodG3,dimerdg)+min(heterodG0,dimerdg)+min(heterodG1,dimerdg)+min(heterodG2,dimerdg))/(6*dimerdg)+(min(hairpindG1,dimerdg)+min(hairpindG2,dimerdg)+min(hairpindG3,dimerdg))/(3*dimerdg)
     theBest=None
     bestMatch=None
     for key,value in sorted(primerScores.items(),key=itemgetter(1),reverse=False):
@@ -63,11 +75,35 @@ def constructPrimers(mutPrimerSeq,wtPrimerSeq,seq,ampliconLen,ampliconLenDev,pri
     return(bestMatch,theBest)
 
 def chooseBestPrimers(seq,seqNames,rFile,ampliconLen,ampliconLenDev,primerLen,primerLenDev,meltTemp,meltTempDev,dimerdg):
-    ref=seq[seq.find('[')+1:seq.find('/')]
-    alt=seq[seq.find('/')+1:seq.find(']')]
-    pos=seq.find('[')
-    seqRef=seq.replace(seq[seq.find('['):seq.find(']')+1],ref)
-    seqAlt=seq.replace(seq[seq.find('['):seq.find(']')+1],alt)
+    if '[' in seq:
+        if ']' in seq:
+            lBracket='['
+            rBracket=']'
+        else:
+            print('#######\nERROR! There is incorrect designation of alternative alleles!\n'
+                  'It should lool like [A/G] or (A/G)',seq[seq.find(lBracket):seq.find(rBracket)+1],'\n#######')
+            exit(0)
+    elif '(' in seq:
+        if ')' in seq:
+            lBracket='('
+            rBracket=')'
+        else:
+            print('#######\nERROR! There is incorrect designation of alternative alleles!\n'
+                  'It should lool like [A/G] or (A/G)',seq[seq.find(lBracket):seq.find(rBracket)+1],'\n#######')
+            exit(0)
+    else:
+        print('#######\nERROR! There is incorrect designation of alternative alleles!\n'
+              'It should lool like [A/G] or (A/G)',seq[seq.find(lBracket):seq.find(rBracket)+1],'\n#######')
+        exit(0)
+    ref=seq[seq.find(lBracket)+1:seq.find('/')]
+    alt=seq[seq.find('/')+1:seq.find(rBracket)]
+    if len(ref)!=1 or len(alt)!=1:
+        print('#######\nERROR! There is incorrect designation of alternative alleles!\n'
+              'It should lool like [A/G] or (A/G). But now it is ',seq[seq.find(lBracket):seq.find(rBracket)+1],'\n#######')
+        exit(0)
+    pos=seq.find(lBracket)
+    seqRef=seq.replace(seq[seq.find(lBracket):seq.find(rBracket)+1],ref)
+    seqAlt=seq.replace(seq[seq.find(lBracket):seq.find(rBracket)+1],alt)
     maxVal=0
     primerVals=[]
     primerEnds=[]
@@ -133,32 +169,32 @@ except ValueError:
 try:
     ampliconLenDev=int(fieldValues[1])
 except ValueError:
-    print('#######\nERROR! Amplicon length must be an integer but not',fieldValues[0],'\n#######')
+    print('#######\nERROR! Amplicon length deviation must be an integer but not',fieldValues[1],'\n#######')
     exit(0)
 try:
     primerLen=int(fieldValues[2])
 except ValueError:
-    print('#######\nERROR! Amplicon length must be an integer but not',fieldValues[0],'\n#######')
+    print('#######\nERROR! Primer length must be an integer but not',fieldValues[2],'\n#######')
     exit(0)
 try:
     primerLenDev=int(fieldValues[3])
 except ValueError:
-    print('#######\nERROR! Amplicon length must be an integer but not',fieldValues[0],'\n#######')
+    print('#######\nERROR! Primer length deviation must be an integer but not',fieldValues[3],'\n#######')
     exit(0)
 try:
     meltTemp=int(fieldValues[4])
 except ValueError:
-    print('#######\nERROR! Amplicon length must be an integer but not',fieldValues[0],'\n#######')
+    print('#######\nERROR! Melting temperature must be an integer but not',fieldValues[4],'\n#######')
     exit(0)
 try:
     meltTempDev=int(fieldValues[5])
 except ValueError:
-    print('#######\nERROR! Amplicon length must be an integer but not',fieldValues[0],'\n#######')
+    print('#######\nERROR! Melting temperature deviation must be an integer but not',fieldValues[5],'\n#######')
     exit(0)
 try:
     dimerdg=int(fieldValues[6])
 except ValueError:
-    print('#######\nERROR! Amplicon length must be an integer but not',fieldValues[0],'\n#######')
+    print('#######\nERROR! dG dimer formation must be an integer but not',fieldValues[6],'\n#######')
     exit(0)
 try:
     f=open(fastaFile)
@@ -176,7 +212,7 @@ for line in f:
         seqNames.append(line.replace('> ','').replace('>','').replace('\n','').replace('\r',''))
         seq=''
     else:
-        seq+=line.replace('\n','').replace('\r','').replace(' ','').replace('\t','')
+        seq+=line.replace('\n','').replace('\r','').replace(' ','').replace('\t','').upper()
 chooseBestPrimers(seq,seqNames,rFile,ampliconLen,ampliconLenDev,primerLen,primerLenDev,meltTemp,meltTempDev,dimerdg)
 rFile.close()
 print('Done')
