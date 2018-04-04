@@ -9,13 +9,13 @@ endChooser works on the Python3+ and requires the following packages:
 * **easygui** - for use of GUI-version: `sudo apt-get install python3-easygui`
 
 ### Windows
-Unfotrunately, primer3 does not work on Windows, so endChooser can not be used under Windows.
+Unfortunately, primer3 does not work on Windows, so endChooser can not be used under Windows, too.
 
 ### Mac OS
 For use on Mac OS download and install python3.6 from www.python.org/downloads/
 After that install the followong packages with respective commands in command line:
 * **Biopython** - with: `pip install biopython`
-* **primer3** - you can install it with: `pip install primer3`
+* **primer3** - you can install it with: `pip install primer3-py`
 * **easygui** - for use of GUI-version: `pip install easygui`
 
 ## Installation
