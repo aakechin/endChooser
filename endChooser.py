@@ -68,7 +68,7 @@ def constructPrimers(mutPrimerSeq,wtPrimerSeq,seq,ampliconLen,ampliconLenDev,pri
                     mutPrimerStart=seq.index(mutPrimer[:-2])
                     primerProps['_'.join(primers[-1])]=[len(mutPrimer),len(wtPrimer),len(rPrimer),j,tm1,tm2,tm3,homodG1,homodG2,homodG3,hairpindG1,hairpindG2,hairpindG3,heterodG1,heterodG2,mutPrimerStart,wtPrimerStart,rPrimerStart-k]
                     if needMinAmpl:
-                        primerScores['_'.join(primers[-1])]=j+20*(abs(tm1-meltTemp)+abs(tm2-meltTemp)+abs(tm3-meltTemp)+abs(tm1-tm2)+abs(tm2-tm3)+abs(tm1-tm3))+5*(min(homodG1,dimerdg)+min(homodG2,dimerdg)+min(homodG3,dimerdg)+min(heterodG1,dimerdg)+min(heterodG2,dimerdg))/(5*dimerdg)+(min(hairpindG1,dimerdg)+min(hairpindG2,dimerdg)+min(hairpindG3,dimerdg))/(3*dimerdg)
+                        primerScores['_'.join(primers[-1])]=j/2+20*(abs(tm1-meltTemp)+abs(tm2-meltTemp)+abs(tm3-meltTemp)+abs(tm1-tm2)+abs(tm2-tm3)+abs(tm1-tm3))+5*(min(homodG1,dimerdg)+min(homodG2,dimerdg)+min(homodG3,dimerdg)+min(heterodG1,dimerdg)+min(heterodG2,dimerdg))/(5*dimerdg)+(min(hairpindG1,dimerdg)+min(hairpindG2,dimerdg)+min(hairpindG3,dimerdg))/(3*dimerdg)
                     else:
                         primerScores['_'.join(primers[-1])]=20*(abs(tm1-meltTemp)+abs(tm2-meltTemp)+abs(tm3-meltTemp)+abs(tm1-tm2)+abs(tm2-tm3)+abs(tm1-tm3))+5*(min(homodG1,dimerdg)+min(homodG2,dimerdg)+min(homodG3,dimerdg)+min(heterodG1,dimerdg)+min(heterodG2,dimerdg))/(5*dimerdg)+(min(hairpindG1,dimerdg)+min(hairpindG2,dimerdg)+min(hairpindG3,dimerdg))/(3*dimerdg)
     # We search for two groups of primers: 1) that match parameters that user applied (bestMatch); 2) that have the best possible parameters
@@ -198,7 +198,7 @@ par.add_argument('--primer-length-deviation','-plendev',dest='primerLenDev',type
 par.add_argument('--melting-temperature','-mtemp',dest='meltTemp',type=int,help='Optimal melting temperature (Default: 60 degrees Celsius)',required=False,default=60)
 par.add_argument('--melting-temperature-deviation','-mtempdev',dest='meltTempDev',type=int,help='Optimal melting temperature deviation (Default: 5 degrees Celsius)',required=False,default=5)
 par.add_argument('--min-dg','-dg',dest='dimerdg',type=int,help='Minimal dG of dimer and hairpin formation (Default: 3000 kcal/mol)',required=False,default=3000)
-par.add_argument('--min-amplicon','-minAmpl',dest='needMinAmpl',action='store_true',help='use this parameter if you need amplicons with a minimal length')
+par.add_argument('--min-amplicon','-min',dest='needMinAmpl',action='store_true',help='use this parameter if you need amplicons with a minimal length')
 par.add_argument('--blast-done','-bd',dest='blastDone',action='store_true',help='use this parameter if blast search of your amplicons has been already done by endChooser')
 par.add_argument('--reference-file','-ref',dest='refFile',type=str,help='Fasta-file with the human reference genome sequence ucsc.hg19.fa. Use this parameter only if you want to check primers for covering SNPs from dbSNP',required=False)
 args=par.parse_args()
@@ -294,6 +294,7 @@ if refFile:
     genomePoses={} # Contains information fromo dbSNP about genomic positions
     print('Checking primers for covering SNPs from dbSNP...')
     allWork=len(seqNames)
+    showPercWork(0,allWork)
     for i,seqName in enumerate(seqNames):
         if seqName not in seqsCoords.keys():
             print('WARNING! No sequences were found in the reference sequence',refFile,'for the sequence',seqName)
