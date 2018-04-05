@@ -27,6 +27,7 @@ Now you can run endChooser (this will start endChooser with the example file):
 `python3 endChooser.py -fa seq.fa -alen 150 -alendev 10 -plen 20 -plendev 4 -mtemp 60 -mtempdev 5 -dg 3000`  
 #### endChooser arguments and parameters
 Some parameters have default values and if they fit your needs, you can skip them. All list of parameters is below:  
+
 |Parameter | Description |
 | --- | --- |
 | -fa | Fasta-file that contains sequence with variable position designated like [A/G] or (A/G). You can see example file seq.fa |
