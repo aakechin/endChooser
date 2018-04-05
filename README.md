@@ -18,12 +18,14 @@ Then, run istalled Cygwin and install additional python packages with the follow
 * **argparse**: `pip3 install argparse`
 * **myvariant**: `pip3 install myvariant`
 * **xlsxwriter**: `pip3 install xlsxwriter`  
+#### Use of endChooser in Cygwin command line
 Download endChooser package to some directory (button "Clone or download", "Download ZIP"). It is simpler to download it to the home directory of Cygwin folder (e.g., for me, it is C:\cygwin64\home\Andrey\). Unzip it to the current directory. Now, you should start Cygwin (if you have stopped it earlier) and go to the directory with unzipped endChooser. For this use the following commands:  
 `cd endChooser-master` (**Tip**: while you are typing some command or file/directory name in the command line, you can press "Tab" button on the keyboard and it will be completed automatically. If there are several commands or file/directory name that fit written letters, press "Tab" two times, and it will write all possible variants).  
 If you have downloaded endChooser to some windows disk (e.g., C:\Users\Andrey\Downloads\), you will need to go to this directory (after unzipping endChooser archive):  
 `cd /cygdrive/c/Users/Andrey/Downloads/`  
 Now you can run endChooser (this will start endChooser with the example file):  
 `python3 endChooser.py -fa seq.fa -alen 150 -alendev 10 -plen 20 -plendev 4 -mtemp 60 -mtempdev 5 -dg 3000`  
+#### endChooser arguments and parameters
 Some parameters have default values and if they fit your needs, you can skip them. All list of parameters is below:  
 |Parameter | Description |
 | --- | --- |
