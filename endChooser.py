@@ -28,12 +28,12 @@ def constructPrimers(mutPrimerSeq,wtPrimerSeq,seq,ampliconLen,ampliconLenDev,pri
     primerScores={}
     for i in range(primerLen-primerLenDev,primerLen+primerLenDev+1):
         mutPrimer=mutPrimerSeq[0][-i:]
-        tm1=mt.Tm_Wallace(mutPrimer)
+        tm1=mt.Tm_Wallace(mutPrimer,strict=False)
         homodG1=primer3.calcHomodimer(mutPrimer).dg
         hairpindG1=primer3.calcHairpin(mutPrimer).dg
         for z in range(primerLen-primerLenDev,primerLen+primerLenDev+1):
             wtPrimer=wtPrimerSeq[-z:]
-            tm2=mt.Tm_Wallace(wtPrimer)
+            tm2=mt.Tm_Wallace(wtPrimer,strict=False)
             homodG2=primer3.calcHomodimer(wtPrimer).dg
             hairpindG2=primer3.calcHairpin(wtPrimer).dg
             for j in range(ampliconLen-ampliconLenDev,ampliconLen+ampliconLenDev+1):
@@ -46,7 +46,7 @@ def constructPrimers(mutPrimerSeq,wtPrimerSeq,seq,ampliconLen,ampliconLenDev,pri
                     exit(0)
                 for k in range(primerLen-primerLenDev,primerLen+primerLenDev+1):
                     rPrimer=revComplement(seq[rPrimerStart-k:rPrimerStart+1])
-                    tm3=mt.Tm_Wallace(rPrimer)
+                    tm3=mt.Tm_Wallace(rPrimer,strict=False)
                     try:
                         homodG3=primer3.calcHomodimer(rPrimer).dg
                     except OSError:
