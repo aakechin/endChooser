@@ -197,7 +197,7 @@ par.add_argument('--primer-length','-plen',dest='primerLen',type=int,help='Optim
 par.add_argument('--primer-length-deviation','-plendev',dest='primerLenDev',type=int,help='Optimal primer length deviation (Default: 4 bp)',required=False,default=4)
 par.add_argument('--melting-temperature','-mtemp',dest='meltTemp',type=int,help='Optimal melting temperature (Default: 60 degrees Celsius)',required=False,default=60)
 par.add_argument('--melting-temperature-deviation','-mtempdev',dest='meltTempDev',type=int,help='Optimal melting temperature deviation (Default: 5 degrees Celsius)',required=False,default=5)
-par.add_argument('--min-dg','-dg',dest='dimerdg',type=int,help='Minimal dG of dimer and hairpin formation (Default: 3000 kcal/mol)',required=False,default=3000)
+par.add_argument('--dg','-dg',dest='dimerdg',type=int,help='Minimal dG of dimer and hairpin formation (Default: 3000 kcal/mol)',required=False,default=3000)
 par.add_argument('--min-amplicon','-min',dest='needMinAmpl',action='store_true',help='use this parameter if you need amplicons with a minimal length')
 par.add_argument('--blast-done','-bd',dest='blastDone',action='store_true',help='use this parameter if blast search of your amplicons has been already done by endChooser')
 par.add_argument('--reference-file','-ref',dest='refFile',type=str,help='Fasta-file with the human reference genome sequence ucsc.hg19.fa. Use this parameter only if you want to check primers for covering SNPs from dbSNP',required=False)
